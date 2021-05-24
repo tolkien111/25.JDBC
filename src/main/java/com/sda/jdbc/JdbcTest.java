@@ -41,24 +41,24 @@ public class JdbcTest {
 
             // aktualizacja rekordu
             String updateQuery = "UPDATE movies SET title = ?, genre = ? WHERE id = ?;";  // ? - przekazuje parametr
-            try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)){ // PreparedStatement używamy jak mamy zapytanie parametryzowane
+            try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) { // PreparedStatement używamy jak mamy zapytanie parametryzowane
                 preparedStatement.setString(1, "Indiana Jones 2"); // 1 odpowiada za pierwszy ?
-                preparedStatement.setString(2,"Action");
+                preparedStatement.setString(2, "Action");
                 preparedStatement.setInt(3, 2);
                 preparedStatement.executeUpdate(); // wykonanie update'u - inaczej nie wykona się update
             }
             // usuwanie rekordu
             String deleteQuery = "DELETE FROM movies  WHERE id = ?";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)){
+            try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
                 preparedStatement.setInt(1, 6);
                 preparedStatement.execute();
             }
 
-            try(Statement statement = connection.createStatement()){
+            try (Statement statement = connection.createStatement()) {
                 String showTableQuery = "SELECT * FROM movies;";
                 ResultSet resultSet = statement.executeQuery(showTableQuery);
 
-                while (resultSet.next()){ // wyświetlanie  rekordów
+                while (resultSet.next()) { // wyświetlanie  rekordów
                     System.out.print(resultSet.getInt("id") + ", ");
                     System.out.print(resultSet.getString("title") + ", ");
                     System.out.print(resultSet.getString("genre") + ", ");
