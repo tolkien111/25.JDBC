@@ -78,7 +78,6 @@ public class MovieDAOImpl implements MovieDAO {
             preparedStatement.setString(1, movie.getTitle());
             preparedStatement.setString(2, movie.getGenre());
             preparedStatement.setInt(3, movie.getYearOfRelease());
-
             return preparedStatement.executeUpdate();
 
         } catch (SQLException throwables) {
@@ -88,7 +87,14 @@ public class MovieDAOImpl implements MovieDAO {
 
     @Override
     public void deleteMovie(int id) {
-        String query = "DELETE FROM movie WHERE id = ?;"; //dokończyć
+        String query = "DELETE FROM movies WHERE id = ?;"; //dokończyć
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+        } catch (SQLException throwables) {
+            throw new DateBaseActionException("Problem with deleting movie with", throwables);
+        }
+
 
     }
 

@@ -18,7 +18,7 @@ public class JdbcTest {
     public static void main(String[] args) {
 
         try (Connection connection = DriverManager.getConnection //  tworzymy połączenie dla wszystkich zapytań - try with resources
-                ("jdbc:mysql://localhost:3306/jdbc_example", "Kamil", "11111111");
+                ("jdbc:mysql://localhost:3306/jdbc_example", "Kamil", "Kamil");
         ) {
             try (Statement statement = connection.createStatement()) { // tworzymy zapytanie do tworzenia tabel
                 statement.execute("CREATE TABLE IF NOT EXISTS MOVIES(\n" +
@@ -54,6 +54,11 @@ public class JdbcTest {
                 preparedStatement.execute();
             }
 
+
+                MovieDAOImpl movieDAO = MovieDAOImpl.getInstance(connection);
+                movieDAO.deleteMovie(8);
+
+
             try (Statement statement = connection.createStatement()) {
                 String showTableQuery = "SELECT * FROM movies;";
                 ResultSet resultSet = statement.executeQuery(showTableQuery);
@@ -70,6 +75,8 @@ public class JdbcTest {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
+
 
 
     }
