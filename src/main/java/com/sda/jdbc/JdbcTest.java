@@ -58,10 +58,12 @@ public class JdbcTest {
             // użycie MocieDAOImpl
             MovieDAOImpl movieDAO = MovieDAOImpl.getInstance(connection);
             movieDAO.deleteMovie(8);
-            movieDAO.deleteMovie(8);
+            movieDAO.deleteMovie(9);
             movieDAO.findAll().stream().iterator().forEachRemaining(System.out::println);
             System.out.println();
-            System.out.println(movieDAO.findMovieById(7));
+            System.out.println(movieDAO.findMovieById(6));
+
+
 
 
             try (Statement statement = connection.createStatement()) {

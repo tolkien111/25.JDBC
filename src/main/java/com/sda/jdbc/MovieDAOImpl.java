@@ -103,13 +103,14 @@ public class MovieDAOImpl implements MovieDAO {
 
     }
 
-    @Override
+    @Override // moj pomysł - łapie wyjątek i zwracam pusty Optional jak nie znajdzie filmu, nie chcę aby program zakończył się błędem
     public Optional<Movie> findMovieById(int id) {
         String query = "SELECT * FROM movies WHERE id = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
+            resultSet.next(); // kursor znajduje się przed pierwszym wynikiem, używając next() przesuwa się kursor do pierwszego wyniku
+            // najprawdopoboniej używamy tylko gdy chcemy zwrócić obiekt czyli używamy -> executeQuery
             long idMovie  = resultSet.getLong("id");
             String title = resultSet.getString("title");
             String genre = resultSet.getString("genre");
@@ -117,8 +118,11 @@ public class MovieDAOImpl implements MovieDAO {
             Movie movie = new Movie(idMovie, title, genre, yearOfRelease);
             return Optional.of(movie);
 
-        } catch (SQLException throwables){
-            throw new DateBaseActionException("Problem mith finding movie with id " + id, throwables);
+
+        } catch (SQLException exception) {
+            System.out.println("Movie with id " + id + " not found");
+            exception.printStackTrace();
+            return Optional.empty();
         }
     }
 
