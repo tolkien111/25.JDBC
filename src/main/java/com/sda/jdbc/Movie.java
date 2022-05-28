@@ -34,4 +34,14 @@ public class Movie {
     public int getYearOfRelease() {
         return yearOfRelease;
     }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", genre='" + genre + '\'' +
+                ", yearOfRelease=" + yearOfRelease +
+                '}';
+    }
 }

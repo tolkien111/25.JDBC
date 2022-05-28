@@ -87,12 +87,12 @@ public class MovieDAOImpl implements MovieDAO {
 
     @Override
     public void deleteMovie(int id) {
-        String query = "DELETE FROM movies WHERE id = ?;"; //dokończyć
+        String query = "DELETE FROM movies WHERE id = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
         } catch (SQLException throwables) {
-            throw new DateBaseActionException("Problem with deleting movie with", throwables);
+            throw new DateBaseActionException("Problem with deleting movie with id " + id, throwables);
         }
 
 
@@ -104,14 +104,29 @@ public class MovieDAOImpl implements MovieDAO {
     }
 
     @Override
-    public Optional<Movie> findMovieById(int id) { // Optional.of - do pomocy
-        return Optional.empty();
+    public Optional<Movie> findMovieById(int id) {
+        String query = "SELECT * FROM movies WHERE id = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            long idMovie  = resultSet.getLong("id");
+            String title = resultSet.getString("title");
+            String genre = resultSet.getString("genre");
+            int yearOfRelease = resultSet.getInt("yearOfRelease");
+            Movie movie = new Movie(idMovie, title, genre, yearOfRelease);
+            return Optional.of(movie);
+
+        } catch (SQLException throwables){
+            throw new DateBaseActionException("Problem mith finding movie with id " + id, throwables);
+        }
     }
 
     @Override
     public List<Movie> findAll() {
         try (Statement statement = connection.createStatement()) {
             boolean result = statement.execute("SELECT * FROM movies;");
+            System.out.println(result);
             if (result) {
                 ResultSet resultSet = statement.getResultSet();
                 List<Movie> movieList = new ArrayList<>();

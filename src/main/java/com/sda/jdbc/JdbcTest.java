@@ -21,13 +21,14 @@ public class JdbcTest {
                 ("jdbc:mysql://localhost:3306/jdbc_example", "Kamil", "Kamil");
         ) {
             try (Statement statement = connection.createStatement()) { // tworzymy zapytanie do tworzenia tabel
-                statement.execute("CREATE TABLE IF NOT EXISTS MOVIES(\n" +
+                boolean statementStatus = statement.execute("CREATE TABLE IF NOT EXISTS MOVIES(\n" +
                         "id INTEGER AUTO_INCREMENT, \n" +
                         "title  VARCHAR(255), \n" +
                         "genre  VARCHAR(255), \n" +
                         "yearOfRelease  INTEGER,\n" +
                         "PRIMARY KEY (id)\n" +
                         ");");
+                System.out.println(statementStatus);
             }
 
 //            try (Statement statement = connection.createStatement()) { // tworzenie zapytania do tworzenia nowych rekordów
@@ -54,9 +55,13 @@ public class JdbcTest {
                 preparedStatement.execute();
             }
 
-
-                MovieDAOImpl movieDAO = MovieDAOImpl.getInstance(connection);
-                movieDAO.deleteMovie(8);
+            // użycie MocieDAOImpl
+            MovieDAOImpl movieDAO = MovieDAOImpl.getInstance(connection);
+            movieDAO.deleteMovie(8);
+            movieDAO.deleteMovie(8);
+            movieDAO.findAll().stream().iterator().forEachRemaining(System.out::println);
+            System.out.println();
+            System.out.println(movieDAO.findMovieById(7));
 
 
             try (Statement statement = connection.createStatement()) {
@@ -75,8 +80,6 @@ public class JdbcTest {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
-
 
 
     }
