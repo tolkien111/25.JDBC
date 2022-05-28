@@ -109,7 +109,7 @@ public class MovieDAOImpl implements MovieDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next(); // kursor znajduje się przed pierwszym wynikiem, używając next() przesuwa się kursor do pierwszego wyniku
+            resultSet.next(); // kursor znajduje się przed pierwszym wynikiem(wierszem), używając next() przesuwa się kursor do pierwszego wyniku
             // najprawdopoboniej używamy tylko gdy chcemy zwrócić obiekt czyli używamy -> executeQuery
             long idMovie  = resultSet.getLong("id");
             String title = resultSet.getString("title");
@@ -125,6 +125,7 @@ public class MovieDAOImpl implements MovieDAO {
             return Optional.empty();
         }
     }
+
 
     @Override
     public List<Movie> findAll() {

@@ -61,7 +61,7 @@ public class JdbcTest {
             movieDAO.deleteMovie(9);
             movieDAO.findAll().stream().iterator().forEachRemaining(System.out::println);
             System.out.println();
-            System.out.println(movieDAO.findMovieById(6));
+            System.out.println(movieDAO.findMovieById(4));
 
 
 
